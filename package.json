@@ -1,0 +1,14 @@
+{
+  "main": "./modules/src/main.js",
+  "scripts": {
+    "start": "electron ./modules/src/main.js",
+    "build": "npx electron-packager . RenameFontatlasToUNICODE --platform=win32 --arch=x64 --out=dist --overwrite"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "electron-packager": "^17.1.2",
+    "electron": "^35.1.5"
+
+  }
+}
