@@ -1,5 +1,5 @@
 const { app, BrowserWindow, ipcMain, dialog } = require('electron');
-const { renameFilesInFolder } = require('./feature/TextatlasRenamer');
+const { renameFilesInFolder } = require('../../feature/TextatlasRenamer/src/TextatlasRenamer');
 
 let mainWindow;
 
