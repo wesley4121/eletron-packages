@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>TextatlasRenamer 工具</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 24px;
+        }
+        #select-folder {
+            padding: 12px 32px;
+            font-size: 1.1em;
+            background: #0078d7;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #select-folder:hover {
+            background: #005fa3;
+        }
+        #status {
+            margin-top: 24px;
+            color: #007800;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>TextatlasRenamer 工具</h1>
+    <button id="select-folder">選擇資料夾</button>
+    <div id="status">重命名完成！</div>
+    <script>
+        const { ipcRenderer } = require('electron');
+        document.getElementById('select-folder').addEventListener('click', () => {
+            ipcRenderer.send('select-folder');
+        });
+        ipcRenderer.on('rename-complete', () => {
+            const status = document.getElementById('status');
+            status.style.display = 'block';
+            setTimeout(() => { status.style.display = 'none'; }, 2000);
+        });
+    </script>
+</body>
+</html>

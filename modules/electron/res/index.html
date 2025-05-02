@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>多工具平台</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+        .tab-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .tab-header {
+            display: flex;
+            background: #e0e0e0;
+            border-bottom: 1px solid #ccc;
+        }
+        .tab-header button {
+            background: none;
+            border: none;
+            padding: 16px 32px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .tab-header button.active {
+            background: #fff;
+            border-bottom: 2px solid #0078d7;
+            color: #0078d7;
+        }
+        .tab-content {
+            flex: 1;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #textatlas-content {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        #status {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="tab-container">
+        <div class="tab-header">
+            <button id="tab-welcome" class="active">歡迎</button>
+            <button id="tab-textatlas">TextatlasRenamer</button>
+        </div>
+        <div class="tab-content" id="tab-content">
+            <div id="welcome-content">
+                <h2>歡迎使用多工具平台</h2>
+                <p>請選擇上方工具分頁開始使用。</p>
+            </div>
+            <div id="textatlas-content">
+                <h1>TextatlasRenamer 工具</h1>
+                <button id="select-folder">選擇資料夾</button>
+                <div id="status">重命名完成！</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const { ipcRenderer } = require('electron');
+        const tabWelcome = document.getElementById('tab-welcome');
+        const tabTextatlas = document.getElementById('tab-textatlas');
+        const welcomeContent = document.getElementById('welcome-content');
+        const textatlasContent = document.getElementById('textatlas-content');
+        const selectFolderBtn = document.getElementById('select-folder');
+        const statusDiv = document.getElementById('status');
+
+        tabWelcome.addEventListener('click', () => {
+            tabWelcome.classList.add('active');
+            tabTextatlas.classList.remove('active');
+            welcomeContent.style.display = '';
+            textatlasContent.style.display = 'none';
+        });
+
+        tabTextatlas.addEventListener('click', () => {
+            tabTextatlas.classList.add('active');
+            tabWelcome.classList.remove('active');
+            welcomeContent.style.display = 'none';
+            textatlasContent.style.display = 'flex';
+        });
+
+        selectFolderBtn.addEventListener('click', () => {
+            ipcRenderer.send('select-folder');
+        });
+        ipcRenderer.on('rename-complete', () => {
+            statusDiv.style.display = 'block';
+            setTimeout(() => { statusDiv.style.display = 'none'; }, 2000);
+        });
+    </script>
+</body>
+</html>
